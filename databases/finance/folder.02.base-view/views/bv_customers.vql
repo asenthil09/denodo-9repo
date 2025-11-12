@@ -31,6 +31,7 @@ CREATE OR REPLACE TABLE bv_customers I18N au_cst (
         phone:text (notnull, sourcetypeid = '12', sourcetypesize = '30')
     )
     FOLDER = '/02.base-view'
+    DESCRIPTION = 'test description'
     CONSTRAINT 'pk_customerid' PRIMARY KEY ( 'customerid' )
     CACHE OFF
     TIMETOLIVEINCACHE DEFAULT
