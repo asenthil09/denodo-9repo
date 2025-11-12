@@ -1,0 +1,44 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_products
+    FOLDER = '/02.base-view'
+    DATASOURCENAME=sql_server
+    CATALOGNAME='${databases.finance.folder.02..base-view.views.jdbc.bv_products.CATALOGNAME}' 
+    SCHEMANAME='${databases.finance.folder.02..base-view.views.jdbc.bv_products.SCHEMANAME}' 
+    RELATIONNAME='products' 
+    OUTPUTSCHEMA (
+        "Productid" = 'Productid' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='int')  NOT NULL SORTABLE,
+        "Productname" = 'Productname' :'java.lang.String' (OPT) (sourcetypesize='100', sourcetypeid='12', sourcetypename='varchar')  NOT NULL SORTABLE,
+        description = 'description' :'java.lang.String' (OPT) (sourcetypesize='500', sourcetypeid='12', sourcetypename='varchar')  SORTABLE,
+        price = 'price' :'java.lang.Long' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='18', sourcetypeid='3', sourcetypename='decimal')  SORTABLE,
+        categoryid = 'categoryid' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='int')  SORTABLE
+    )
+    CONSTRAINT 'pk_productid' PRIMARY KEY ( 'Productid' )
+    CONSTRAINT 'FK__products__catego__30F848ED' FOREIGN KEY ( 'categoryid' ) 
+    REFERENCES 'onlineshopping'.'dbo'.'category'( 'categoryid' )  ON UPDATE NO ACTION  ON DELETE NO ACTION NOT DEFERRABLE 
+    INDEX 'pk_productid' CLUSTER UNIQUE PRIMARY ( 'Productid' );
+
+CREATE OR REPLACE TABLE bv_products I18N au_cst (
+        "Productid":int (notnull, sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '10'),
+        "Productname":text (notnull, sourcetypeid = '12', sourcetypesize = '100'),
+        description:text (sourcetypeid = '12', sourcetypesize = '500'),
+        price:long (sourcetypeid = '-5', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '18'),
+        categoryid:int (sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '10')
+    )
+    FOLDER = '/02.base-view'
+    CONSTRAINT 'pk_productid' PRIMARY KEY ( 'Productid' )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_products(
+        I18N au_cst
+        CONSTRAINTS (
+             ADD "Productid" (any) OPT ANY
+             ADD "Productname" (any) OPT ANY
+             ADD description (any) OPT ANY
+             ADD price (any) OPT ANY
+             ADD categoryid (any) OPT ANY
+        )
+        OUTPUTLIST ("Productid", "Productname", categoryid, description, price
+        )
+        WRAPPER (jdbc bv_products)
+    );
+

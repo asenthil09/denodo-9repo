@@ -1,0 +1,54 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_customers
+    FOLDER = '/02.base-view'
+    DATASOURCENAME=sql_server
+    CATALOGNAME='${databases.finance.folder.02..base-view.views.jdbc.bv_customers.CATALOGNAME}' 
+    SCHEMANAME='${databases.finance.folder.02..base-view.views.jdbc.bv_customers.SCHEMANAME}' 
+    RELATIONNAME='customers' 
+    OUTPUTSCHEMA (
+        customerid = 'customerid' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='int')  NOT NULL SORTABLE,
+        customerfirstname = 'customerfirstname' :'java.lang.String' (OPT) (sourcetypesize='50', sourcetypeid='12', sourcetypename='varchar')  NOT NULL SORTABLE,
+        customerlastname = 'customerlastname' :'java.lang.String' (OPT) (sourcetypesize='50', sourcetypeid='12', sourcetypename='varchar')  SORTABLE,
+        address = 'address' :'java.lang.String' (OPT) (sourcetypesize='250', sourcetypeid='12', sourcetypename='varchar')  NOT NULL SORTABLE,
+        district = 'district' :'java.lang.String' (OPT) (sourcetypesize='50', sourcetypeid='12', sourcetypename='varchar')  NOT NULL SORTABLE,
+        city = 'city' :'java.lang.String' (OPT) (sourcetypesize='30', sourcetypeid='12', sourcetypename='varchar')  NOT NULL SORTABLE,
+        country = 'country' :'java.lang.String' (OPT) (sourcetypesize='50', sourcetypeid='12', sourcetypename='varchar')  NOT NULL SORTABLE,
+        postalcode = 'postalcode' :'java.lang.String' (OPT) (sourcetypesize='50', sourcetypeid='12', sourcetypename='varchar')  NOT NULL SORTABLE,
+        phone = 'phone' :'java.lang.String' (OPT) (sourcetypesize='30', sourcetypeid='12', sourcetypename='varchar')  NOT NULL SORTABLE
+    )
+    CONSTRAINT 'pk_customerid' PRIMARY KEY ( 'customerid' )
+    INDEX 'pk_customerid' CLUSTER UNIQUE PRIMARY ( 'customerid' );
+
+CREATE OR REPLACE TABLE bv_customers I18N au_cst (
+        customerid:int (notnull, sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '10'),
+        customerfirstname:text (notnull, sourcetypeid = '12', sourcetypesize = '50'),
+        customerlastname:text (sourcetypeid = '12', sourcetypesize = '50'),
+        address:text (notnull, sourcetypeid = '12', sourcetypesize = '250'),
+        district:text (notnull, sourcetypeid = '12', sourcetypesize = '50'),
+        city:text (notnull, sourcetypeid = '12', sourcetypesize = '30'),
+        country:text (notnull, sourcetypeid = '12', sourcetypesize = '50'),
+        postalcode:text (notnull, sourcetypeid = '12', sourcetypesize = '50'),
+        phone:text (notnull, sourcetypeid = '12', sourcetypesize = '30')
+    )
+    FOLDER = '/02.base-view'
+    CONSTRAINT 'pk_customerid' PRIMARY KEY ( 'customerid' )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_customers(
+        I18N au_cst
+        CONSTRAINTS (
+             ADD customerid (any) OPT ANY
+             ADD customerfirstname (any) OPT ANY
+             ADD customerlastname (any) OPT ANY
+             ADD address (any) OPT ANY
+             ADD district (any) OPT ANY
+             ADD city (any) OPT ANY
+             ADD country (any) OPT ANY
+             ADD postalcode (any) OPT ANY
+             ADD phone (any) OPT ANY
+        )
+        OUTPUTLIST (address, city, country, customerfirstname, customerid, customerlastname, district, phone, postalcode
+        )
+        WRAPPER (jdbc bv_customers)
+    );
+

@@ -1,0 +1,2 @@
+﻿CREATE OR REPLACE VIEW dv_products FOLDER = '/03.dervied-views' AS SELECT bv_products."Productid" AS "Productid", bv_products."Productname" AS "Productname", bv_products.description AS description, bv_products.price AS price, bv_products.categoryid AS categoryid FROM bv_products WHERE "Productid" in (111, 112, 113, 114);
+

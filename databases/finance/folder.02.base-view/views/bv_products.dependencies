@@ -1,0 +1,3 @@
+﻿1/databases/finance/folder.02.base-view/02.base-view.vql
+*/databases/finance/folder.01,data-source/01,data-source.vql
+1/databases/finance/folder.01,data-source/datasources/jdbc/sql_server.vql

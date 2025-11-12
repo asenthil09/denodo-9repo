@@ -1,0 +1,39 @@
+﻿# REQUIRES-PROPERTIES-FILE - # Do not remove this comment!
+CREATE OR REPLACE WRAPPER JDBC bv_orders
+    FOLDER = '/02.base-view'
+    DATASOURCENAME=sql_server
+    CATALOGNAME='${databases.finance.folder.02..base-view.views.jdbc.bv_orders.CATALOGNAME}' 
+    SCHEMANAME='${databases.finance.folder.02..base-view.views.jdbc.bv_orders.SCHEMANAME}' 
+    RELATIONNAME='orders' 
+    OUTPUTSCHEMA (
+        orderno = 'orderno' :'java.lang.String' (OPT) (sourcetypesize='10', sourcetypeid='12', sourcetypename='varchar')  NOT NULL SORTABLE,
+        customerid = 'customerid' :'java.lang.Integer' (OPT) (sourcetypedecimals='0', sourcetyperadix='10', sourcetypesize='10', sourcetypeid='4', sourcetypename='int')  NOT NULL SORTABLE,
+        ordereddate = 'ordereddate' :'java.time.LocalDate' (OPT) (sourcetypedecimals='0', sourcetypesize='10', sourcetypeid='91', sourcetypename='date')  NOT NULL SORTABLE
+    )
+    CONSTRAINT 'pk_orderno' PRIMARY KEY ( 'orderno' )
+    CONSTRAINT 'FK__orders__customer__31EC6D26' FOREIGN KEY ( 'customerid' ) 
+    REFERENCES 'onlineshopping'.'dbo'.'customers'( 'customerid' )  ON UPDATE NO ACTION  ON DELETE NO ACTION NOT DEFERRABLE 
+    INDEX 'pk_orderno' CLUSTER UNIQUE PRIMARY ( 'orderno' )
+    INDEX 'orders_index' OTHER ( 'orderno' , 'customerid' , 'ordereddate' );
+
+CREATE OR REPLACE TABLE bv_orders I18N au_cst (
+        orderno:text (notnull, sourcetypeid = '12', sourcetypesize = '10'),
+        customerid:int (notnull, sourcetypeid = '4', sourcetyperadix = '10', sourcetypedecimals = '0', sourcetypesize = '10'),
+        ordereddate:localdate (notnull, sourcetypeid = '91', sourcetypedecimals = '0', sourcetypesize = '10')
+    )
+    FOLDER = '/02.base-view'
+    CONSTRAINT 'pk_orderno' PRIMARY KEY ( 'orderno' )
+    CACHE OFF
+    TIMETOLIVEINCACHE DEFAULT
+    ADD SEARCHMETHOD bv_orders(
+        I18N au_cst
+        CONSTRAINTS (
+             ADD orderno (any) OPT ANY
+             ADD customerid (any) OPT ANY
+             ADD ordereddate (any) OPT ANY
+        )
+        OUTPUTLIST (customerid, ordereddate, orderno
+        )
+        WRAPPER (jdbc bv_orders)
+    );
+

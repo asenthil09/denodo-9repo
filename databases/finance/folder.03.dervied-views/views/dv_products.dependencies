@@ -1,0 +1,6 @@
+﻿1/databases/finance/folder.03.dervied-views/03.dervied-views.vql
+*/databases/finance/folder.02.base-view/02.base-view.vql
+*/databases/finance/folder.01,data-source/01,data-source.vql
+*/databases/finance/folder.01,data-source/datasources/jdbc/sql_server.vql
+1/databases/finance/folder.02.base-view/views/bv_products.vql
+*/databases/finance/folder.02.base-view/views/bv_products.vql
