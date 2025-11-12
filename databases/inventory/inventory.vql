@@ -1,0 +1,5 @@
+﻿CREATE OR REPLACE DATABASE inventory '';
+
+ALTER DATABASE inventory
+  CHARSET DEFAULT;
+
