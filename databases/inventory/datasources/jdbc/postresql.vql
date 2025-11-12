@@ -26,6 +26,7 @@ CREATE OR REPLACE DATASOURCE JDBC postresql
     DATA_LOAD_CONFIGURATION (
         BATCHINSERTSIZE = 200
     )
+    DESCRIPTION  = 'test description'
     SOURCECONFIGURATION (
         delegatecompoundfieldprojection = false,
         delegateaggregatefunctionslist = (avg, count, max, min, stdev, stdevp, sum, var, varp),
